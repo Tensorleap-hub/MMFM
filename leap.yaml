@@ -1,0 +1,8 @@
+codeIntegrationId: 666ed9931b8de95723e12477
+projectId: 
+secretId: 
+entryFile: 'leap_binder.py'
+include:
+  - leap_binder.py
+  - leap_test.py
+  - leap_custom_test.py
