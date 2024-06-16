@@ -1,32 +1,33 @@
 gcs_project: splendid-flow-231921
-gcs_bucket_name: datasets-reteai
-
-input_data_dir: iconqa/iconqa/
-main_data_dir: .
-out_data_dir: processed_data/iconqa
-gcs_data_dir: .
-processed_data_dir: .
-data_filename: data.csv
-
-train_size: 700
-val_size: 300
-ul_size: 300
-random_seed: 42
-
-label_name_to_id:
-  pickable_object: 0
-  pickable_pallet: 1
-  pickable_slipsheet: 2
-
-image_shape: [ 480, 640 ]  # [H, W]
-max_objects_per_image: 100
-max_polygon_length: 42
-
-confidence_threshold: 0.5
-mask_threshold: 0.1
-iou_threshold: 0.5
-
-small_bb_threshold: 0.02
-
-BUCKET_NAME: plusonerobotics-datasets
-PROJECT_ID: plusonerobotics-dev-project
+BUCKET_NAME: datasets-reteai
+cloud_dict: iconqa
+img_size: [326, 168]
+#input_data_dir: iconqa/iconqa/
+#main_data_dir: .
+#out_data_dir: processed_data/iconqa
+#gcs_data_dir: .
+#processed_data_dir: .
+#data_filename: data.csv
+#
+#train_size: 700
+#val_size: 300
+#ul_size: 300
+#random_seed: 42
+#
+#label_name_to_id:
+#  pickable_object: 0
+#  pickable_pallet: 1
+#  pickable_slipsheet: 2
+#
+#image_shape: [ 480, 640 ]  # [H, W]
+#max_objects_per_image: 100
+#max_polygon_length: 42
+#
+#confidence_threshold: 0.5
+#mask_threshold: 0.1
+#iou_threshold: 0.5
+#
+#small_bb_threshold: 0.02
+#
+#BUCKET_NAME: plusonerobotics-datasets
+#PROJECT_ID: plusonerobotics-dev-project
