@@ -26,7 +26,7 @@ def _connect_to_gcs_and_return_bucket(bucket_name: str) -> Bucket:
     return gcs_client.bucket(bucket_name)
 
 
-def _download(bucket_name: str, cloud_file_path: str, local_file_path: Optional[str] = None, overwrite: bool = False) -> str:
+def _download(cloud_file_path: str, local_file_path: Optional[str] = None, overwrite: bool = False) -> str:
     # if local_file_path is not specified saving in home dir
     if local_file_path is None:
         local_file_path = os.path.join(cnf.local_data_path, cloud_file_path)
@@ -35,7 +35,7 @@ def _download(bucket_name: str, cloud_file_path: str, local_file_path: Optional[
     if os.path.exists(local_file_path) and not overwrite:
         return local_file_path
 
-    bucket = _connect_to_gcs_and_return_bucket(bucket_name)
+    bucket = _connect_to_gcs_and_return_bucket(cnf.BUCKET_NAME)
     dir_path = os.path.dirname(local_file_path)
     os.makedirs(dir_path, exist_ok=True)
     blob = bucket.blob(cloud_file_path)
