@@ -12,6 +12,9 @@ from mmfm.gcs_utils import _download
 from mmfm.config import cnf
 from mmfm.dataset.data_utils import init_dataset, crop_and_padding
 from PIL import Image
+from code_loader.contract.visualizer_classes import LeapImage
+from code_loader.contract.enums import LeapDataType
+
 
 # Preprocess Function
 def preprocess_func() -> List[PreprocessResponse]:
@@ -35,6 +38,14 @@ def img_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     return np.array(padded_img)
 
 
+def image_visualizer(img: np.ndarray):
+    return LeapImage(img[:cnf.img_size[1], :cnf.img_size[0]].astype(np.uint8))
+
+
+def heatmap_image_visualizer(heatmap: np.ndarray):
+    return LeapImage(heatmap[:cnf.img_size[1], :cnf.img_size[0]])
+
+
 def question_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     return preprocess.data['dataset'][idx]['question_token']
 
@@ -42,10 +53,12 @@ def question_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
 def choice_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     return preprocess.data['dataset'][idx]['choice_token'].swapaxes(0, 1)
 
+
 # Ground truth encoder fetches the label with the index `idx` from the `labels` array set in
 # the PreprocessResponse's data. Returns a numpy array containing a hot vector label correlated with the sample.
 def gt_encoder(idx: int, preprocessing: PreprocessResponse) -> np.ndarray:
-    return preprocessing.data['labels'][idx].astype('float32')
+    return preprocessing.data['dataset'][idx]['gt']
+
 
 # Metadata functions allow to add extra data for a later use in analysis.
 # This metadata adds the int digit of each sample (not a hot vector).
@@ -60,11 +73,17 @@ def bar_visualizer(data: np.ndarray) -> LeapHorizontalBar:
     return LeapHorizontalBar(data, LABELS)
 
 
-LABELS = ['0','1','2','3','4','5','6','7','8','9']
+LABELS = ['1', '2', '3', '4', '5']
 # Dataset binding functions to bind the functions above to the `Dataset Instance`.
 leap_binder.set_preprocess(function=preprocess_func)
 leap_binder.set_input(function=img_encoder, name='image')
-leap_binder.set_ground_truth(function=gt_encoder, name='classes')
+leap_binder.set_input(function=question_encoder, name='question')
+leap_binder.set_input(function=choice_encoder, name='choices')
+leap_binder.set_visualizer(function=image_visualizer,
+                           name="image_vis",
+                           visualizer_type=LeapDataType.Image,
+                           heatmap_visualizer=heatmap_image_visualizer)
+leap_binder.set_ground_truth(function=gt_encoder, name='options')
 # leap_binder.set_metadata(function=metadata_label, metadata_type=DatasetMetadataType.int, name='label')
 # leap_binder.add_prediction(name='classes', labels=LABELS)
 # leap_binder.set_visualizer(name='horizontal_bar_classes', function=bar_visualizer, visualizer_type=LeapHorizontalBar.type)
