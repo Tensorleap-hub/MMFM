@@ -1,6 +1,6 @@
 import os
 from leap_binder import preprocess_func, img_encoder, question_encoder, choice_encoder,\
-    gt_encoder, image_visualizer
+    gt_encoder, image_visualizer, question_visualizer, choice_visualizer, get_metadata
 import tensorflow as tf
 import matplotlib.pyplot as plt
 # import numpy as np
@@ -25,15 +25,22 @@ def check_custom_integration():
     model_path = os.path.join(dir_path, H5_MODEL_PATH)
     x = preprocess_func()
     loss = tf.keras.losses.CategoricalCrossentropy(from_logits=False)
-    img = img_encoder(0, x[0])[None, ...]
-    vis_image = image_visualizer(img[0])
-    plt.imshow(vis_image.data)
-    question = question_encoder(0, x[0])[None, ...]
-    choices = choice_encoder(0, x[0])[None, ...]
-    gt = gt_encoder(0, x[0])[None, ...]
     model = tf.keras.models.load_model(model_path)
-    res = model([question, img, choices])
-    ls = loss(tf.nn.softmax(res), gt)
+    for i in range(20):
+        img = img_encoder(i, x[0])[None, ...]
+        question = question_encoder(i, x[0])[None, ...]
+        choices = choice_encoder(i, x[0])[None, ...]
+        gt = gt_encoder(i, x[0])[None, ...]
+        print(img.shape)
+        print(question.shape)
+        print(choices.shape)
+        vis_image = image_visualizer(img[0])
+        # plt.imshow(vis_image.data)
+        decoded_text = question_visualizer(question[0])
+        decoded_choice = choice_visualizer(choices[0])
+        res = model([question, img, choices[..., 0]])
+        metadata_dict = get_metadata(i, x[0])
+        # ls = loss(tf.nn.softmax(res), gt)
     print(1)
 
 

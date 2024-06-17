@@ -1,8 +1,22 @@
-codeIntegrationId: 666ed9931b8de95723e12477
-projectId: 
-secretId: 
-entryFile: 'leap_binder.py'
+codeIntegrationId: 666ff493b4e0e6e5564ca439
+projectId: 666ff887b4e0e6e5564ca47d
+secretId: 666ff46cb4e0e6e5564ca437
+entryFile: leap_binder.py
 include:
-  - leap_binder.py
-  - leap_test.py
-  - leap_custom_test.py
+    - leap_binder.py
+    - leap_test.py
+    - leap_custom_test.py
+    - mmfm/dataset/dataset.py
+    - mmfm/dataset/data_utils.py
+    - mmfm/dataset/__init__.py
+    - mmfm/config.py
+    - mmfm/config.yaml
+    - mmfm/gcs_utils.py
+    - mmfm/tools/image_models.py
+    - mmfm/tools/sub_acc.py
+    - mmfm/tools/utils.py
+    - mmfm/tools/__init__.py
+    - mmfm/tools/generate_img_patch_feature.py
+    - mmfm/tools/generate_img_choice_feature.py
+    - mmfm/tools/create_dictionary.py
+    - mmfm/tools/create_ans_label.py

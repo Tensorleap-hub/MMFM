@@ -19,6 +19,7 @@ def init_dataset():
 def crop_and_padding(img, padding=3):
     # Crop the image
     bbox = img.getbbox() # [left, top, right, bottom]
+    bbox = (0, 0, *cnf.img_size)
     img = img.crop(bbox)
 
     # Add padding spaces to the 4 sides of an image
