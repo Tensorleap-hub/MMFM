@@ -2,6 +2,7 @@ gcs_project: splendid-flow-231921
 BUCKET_NAME: datasets-reteai
 cloud_dict: iconqa
 img_size: [326, 168]
+max_imgs: 10000
 #input_data_dir: iconqa/iconqa/
 #main_data_dir: .
 #out_data_dir: processed_data/iconqa
