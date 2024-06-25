@@ -15,11 +15,19 @@ google-cloud-storage = "^2.17.0"
 pyyaml = "^6.0.1"
 openpyxl = "^3.1.4"
 code-loader = "^1.0.41"
-tensorflow = "2.11.0"
-tensorflow-io-gcs-filesystem = "0.30.0"
+#tensorflow = "2.11.0"
+#tensorflow-io-gcs-filesystem = "0.30.0"
 torch = "1.12.1"
 transformers = "^4.17.0"
 matplotlib = "^3.7"
+#tensorflow = "2.13.0"
+tensorflow-io-gcs-filesystem = "0.34.0"
+tensorflow = "2.13.0"
+spacy = "^3.7.5"
+textstat = "^0.7.3"
+readability = "^0.3.1"
+py-readability-metrics = "^1.4.5"
+
 
 [build-system]
 requires = ["poetry-core"]

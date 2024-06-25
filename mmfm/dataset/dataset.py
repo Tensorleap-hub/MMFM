@@ -90,7 +90,7 @@ def _load_dataset(dataroot, name, task):
     - name: 'train', 'val', 'test', 'traninval', 'minitrain', 'minival', 'minitest'
     - task: 'choose_txt'
     """
-    problems =  json.load(open(os.path.join(dataroot, 'iconqa_data', 'problems.json')))
+    problems = json.load(open(os.path.join(dataroot, 'iconqa_data', 'problems.json')))
     pid_splits = json.load(open(os.path.join(dataroot, 'iconqa_data', 'pid_splits.json')))
 
     pids = pid_splits['%s_%s' % (task, name)]
