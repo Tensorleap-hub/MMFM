@@ -217,16 +217,35 @@ def get_readibility_score(key: str, question) -> float:
         return -1
 
 
+def get_num_letters(question):
+    question = [word for word in question if '?' not in word]
+    question = ''.join(filter(None, question))
+    return float(len(question))
+
+
+def get_num_words(question):
+    question = [word for word in question if '?' not in word]
+    return float(len(list(filter(None, question))))
+
+
 def question_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union[str, int, float]]:
     question_token = preprocess.data['dataset'][idx]['question_token']
     decoded_question = leap_binder.cache_container['tokenizer'].convert_ids_to_tokens(question_token)
     decoded_question = [token.replace(chr(9601), '').replace("##", "").replace("[PAD]", "").
                         replace("[CLS]", "").replace("[SEP]", "") for token in decoded_question]
 
+    skills = preprocess.data['dataset'].entries[idx]['skills']
+    skills = [word.lower() for word in skills]
+    skills.sort()
+
     question_metadata_functions = {
-        "Num_letters": get_statistics('num_letters', decoded_question),
-        "Num_words": get_statistics('num_words', decoded_question),
-        "Question Type": classify_question_type(decoded_question),
+        "Num_letters": get_num_letters(decoded_question),
+        "Num_words": get_num_words(decoded_question),
+        "Question_word": classify_question_type(decoded_question),
+        "Label": preprocess.data['dataset'].entries[idx]['label'],
+        "Grade": preprocess.data['dataset'].entries[idx]['grade'],
+        "Skills": '_'.join(skills),
+        "Skills_number": float(len(skills))
         # "ARI": get_readibility_score('ari', decoded_question),
         # "Dale_chall": get_readibility_score('dale_chall', decoded_question),
         # "Flesch": get_readibility_score('flesch', decoded_question),
@@ -236,6 +255,18 @@ def question_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Uni
     }
 
     return question_metadata_functions
+
+
+def skills_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union[str, int, float]]:
+    skills = preprocess.data['dataset'].entries[idx]['skills']
+    skills = [word.lower() for word in skills]
+    skills.sort()
+    skills_dict = {skill: 0 for skill in cnf.skills}
+    for key in skills:
+        if key in skills_dict:
+            skills_dict[key] = 1
+
+    return skills_dict
 
 
 LABELS = ['1', '2', '3', '4', '5']
@@ -260,6 +291,7 @@ leap_binder.add_prediction(name='pred-options', labels=LABELS)
 leap_binder.set_metadata(function=metadata_label, name='label')
 leap_binder.set_metadata(function=get_metadata, name='')
 leap_binder.set_metadata(function=question_metadata, name='question')
+leap_binder.set_metadata(function=skills_metadata, name='skills')
 
 if __name__ == '__main__':
     leap_binder.check()

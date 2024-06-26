@@ -1,6 +1,6 @@
 import os
 from leap_binder import preprocess_func, img_encoder, question_encoder, choice_encoder, \
-    gt_encoder, image_visualizer, question_visualizer, choice_visualizer, get_metadata, question_metadata
+    gt_encoder, image_visualizer, question_visualizer, choice_visualizer, get_metadata, question_metadata, skills_metadata
 import tensorflow as tf
 import matplotlib.pyplot as plt
 # import numpy as np
@@ -42,7 +42,8 @@ def check_custom_integration():
         metadata_dict = get_metadata(i, x[1])
         # ls = loss(tf.nn.softmax(res), gt)
         metadata_q = question_metadata(i, x[1])
-    print(1)
+        metadata_skills = skills_metadata(i, x[1])
+
 
 
 if __name__ == '__main__':

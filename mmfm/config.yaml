@@ -8,6 +8,21 @@ packages:
  - name: spacy
  - name: textstat
 
+
+skills:
+ - algebra
+ - counting
+ - geometry
+ - commonsense_time
+ - comparing
+ - probability
+ - time
+ - fraction
+ - pattern
+ - estimation
+
+
+
 #input_data_dir: iconqa/iconqa/
 #main_data_dir: .
 #out_data_dir: processed_data/iconqa

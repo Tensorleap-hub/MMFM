@@ -92,6 +92,7 @@ def _load_dataset(dataroot, name, task):
     """
     problems = json.load(open(os.path.join(dataroot, 'iconqa_data', 'problems.json')))
     pid_splits = json.load(open(os.path.join(dataroot, 'iconqa_data', 'pid_splits.json')))
+    pid2skills = json.load(open(os.path.join(dataroot, 'iconqa_data', 'pid2skills.json')))
 
     pids = pid_splits['%s_%s' % (task, name)]
     print("problem number for %s_%s:" % (task, name), len(pids))
@@ -103,6 +104,9 @@ def _load_dataset(dataroot, name, task):
         prob['image_id'] = pid
         prob['question'] = _simplify_question(problems[pid]['question'])
         prob['ques_type'] = problems[pid]['ques_type']
+        prob['grade'] = problems[pid]['grade']
+        prob['label'] = problems[pid]['label']
+        prob['skills'] = pid2skills[pid]
 
         utils.assert_eq(task, prob['ques_type'])
 

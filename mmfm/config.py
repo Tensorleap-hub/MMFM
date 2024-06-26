@@ -14,7 +14,7 @@ def load_od_config() -> Struct:
     with open(file_path, 'r') as file:
         config = yaml.safe_load(file)
 
-    config['local_data_path'] = os.path.join(os.getenv("HOME"), "tensorleap", "data", config['BUCKET_NAME'])
+    config['local_data_path'] = os.path.join(os.getenv("HOME"), "Tensorleap", "data", config['BUCKET_NAME'])
 
     return Struct(**config)
 
