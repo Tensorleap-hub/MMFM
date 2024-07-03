@@ -41,11 +41,11 @@ question word among other metadata, indicates that when need to estimate how man
 
 <div style="display: flex; justify-content: center;">
   <div style="flex: 1; text-align: center;">
-    <img src="images/insight.png" alt="Image 1" width="300" style="margin-right: 10px;">
+    <img src="images/insight.png" alt="Image 1" width="400" style="margin-right: 10px;">
   </div>
   <div style="display: flex; flex-direction: row;">
-    <img src="images/marbles2.png" alt="Image 2" width="300" style="margin-right: 10px;">
-    <img src="images/marbles3.png" alt="Image 3" width="300" style="margin-left: 10px;">
+    <img src="images/marbles2.png" alt="Image 2" width="400" style="margin-right: 10px;">
+    <img src="images/marbles3.png" alt="Image 3" width="400" style="margin-left: 10px;">
   </div>
 </div>
 
