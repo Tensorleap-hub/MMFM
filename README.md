@@ -2,7 +2,7 @@
 # MMFM model with IconQA dataset
 
 <div style="text-align: center;">
-    <img src="images/open.png" alt="Untitled" width="600"/>
+    <img src="images/open.png" alt="Untitled" width="700"/>
 </div>
 
 <br>
@@ -27,7 +27,7 @@ It shows a visualization of the latenat space where each dot represent a smple. 
 In our case the latent space is clustered by the questions.
 
 <div style="text-align: center;">
-    <img src="images/PE1.png" alt="Untitled" width="500"/>
+    <img src="images/PE1.png" alt="Untitled" width="600"/>
 </div>
 
 <br>
@@ -40,18 +40,23 @@ When filtering the latent space by the higher loss samples the first "low perfor
 question word among other metadata, indicates that when need to estimate how many marbles are in the image the model fails
 
 <div style="display: flex; justify-content: center;">
-  <img src="images/insight.png" alt="Image 1" width="300" style="margin-right: 10px;">
-  <img src="images/marbles2.png" alt="Image 2" width="300" style="margin-right: 10px;">
-  <img src="images/marbles3.png" alt="Image 3" width="300" style="margin-left: 10px;">
+  <div style="flex: 1; text-align: center;">
+    <img src="images/insight.png" alt="Image 1" width="300" style="margin-right: 10px;">
+  </div>
+  <div style="display: flex; flex-direction: row;">
+    <img src="images/marbles2.png" alt="Image 2" width="300" style="margin-right: 10px;">
+    <img src="images/marbles3.png" alt="Image 3" width="300" style="margin-left: 10px;">
+  </div>
 </div>
 
+This is some more text in my README.
 #### *- Using PE*
 
 When we lookin on the PE (population exploration) we can see that there is a group in the upper side of the latent space that contains 
 images with the same question - “on which color is the spin ner less likely to land?“
 
 <div style="text-align: center;">
-    <img src="images/kmeans-1.png" alt="Untitled" width="500"/>
+    <img src="images/kmeans-1.png" alt="Untitled" width="600"/>
 </div>
 
 <br>
@@ -83,7 +88,7 @@ The proximity of these clusters in the latent space suggests that the model has 
 among these concepts, grouping them together due to their shared relevance to the theme of time and clocks.
 
 <div style="text-align: center;">
-    <img src="images/bise.png" alt="Untitled" width="500"/>
+    <img src="images/bise.png" alt="Untitled" width="600"/>
 </div>
 
 <br>
@@ -105,7 +110,7 @@ clusters with more abstract patterns.
 The figure below illustrates a cluster of images accompanied by the question: "what has been done to this letter?"
 
 <div style="text-align: center;">
-    <img src="images/fetch_similar.png" alt="Untitled" width="500"/>
+    <img src="images/fetch_similar.png" alt="Untitled" width="600"/>
 </div>
 
 <br>
