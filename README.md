@@ -5,16 +5,17 @@
     <img src="images/open.png" alt="Untitled" width="600"/>
 </div>
 
+<br>
+
 The [IconQA](https://github.com/lupantech/IconQA/tree/main) (icon question answering) dataset aims to highlight the 
 importance of abstract diagram understanding and comprehensive cognitive reasoning in real-world diagram word problems. 
-IconQA consists of three sub-tasks:multi-image-choice, multi-text-choice, and filling-in-the-blank. 
+It consists of three sub-tasks: multi-image-choice, multi-text-choice, and filling-in-the-blank. 
 IconQA requires not only perception skills like object recognition and text understanding, but also diverse cognitive 
 reasoning skills, such as geometric reasoning, commonsense reasoning, and arithmetic reasoning.
 
-In this project we used the multi-text-choice data with the pre-trained Multimodal Foundation Model.
+In this project we used the multi-text-choice data with a pre-trained Multimodal Foundation Model.
 
 Using **Tensorleap** we can explore the latent space, easily detect unlabeled clusters, and handle those with high loss. 
-
 This quick start guide will walk you through the steps to get started with this example repository project.
 
 ### Population Exploration
@@ -22,46 +23,44 @@ This quick start guide will walk you through the steps to get started with this 
 Below is a population exploration plot. It represents a samples similarity map based on the model's latent space,
 built using the extracted features of the trained model.
 
-We can see that the latent space is separated by the questions type.
+It shows a visualization of the latenat space where each dot represent a smple. The color and the size affected from the loss value.
+In our case the latent space is clustered by the questions.
 
 ![Latent space](images/PE1.png)
 
-When filtering the latent space by the higher loss samples we got samples that most of the questions focus on 
-counting object and return that number:
-
-“if you select a marble without looking , which color are you more likely to pick ?”
-“how many rectangles are there ?“
-
 #### *Detecting High Loss Clusters*
 
-When filtering the latent space by the higher loss samples the first "low performance" insight correlated to "how" 
-question word and **more**, indicates that when need to estimate how many marbles are in the image the model fails
+##### *Using Tensorleap Insight*
 
-<div style="display: flex">
-  <img src="images/insight.png" alt="Image 1" style="margin-right: 10px;">
-  <img src="images/marbles.png" alt="Image 2" style="margin-left: 10px;">
-  <img src="images/marbles2.png" alt="Image 3" style="margin-right: 10px;">
-  <img src="images/marbles3.png" alt="Image 4" style="margin-left: 10px;">
+When filtering the latent space by the higher loss samples the first "low performance" insight correlated to "how" 
+question word among other metadata, indicates that when need to estimate how many marbles are in the image the model fails
+
+<div style="display: flex; justify-content: center;">
+  <img src="images/insight.png" alt="Image 1" width="150" style="margin-right: 10px;">
+  <img src="images/marbles2.png" alt="Image 2" width="150" style="margin-right: 10px;">
+  <img src="images/marbles3.png" alt="Image 3" width="150" style="margin-left: 10px;">
 </div>
 
-#----------------------------------------
+##### *Using PE*
 
-There is a group in the upper side of the PE that contains images in this style:
+When we lookin on the PE (population exploration) we can see that there is a group in the upper side of the latent space that contains 
+images with the same question - “on which color is the spin ner less likely to land?“
 ![kmeans-1](images/kmeans-1.png)
 
-The question is- “on which color is the spin ner less likely to land?“
-The model always choose “white” as the answear.
+Investigating more lead to the conclusion that the model always choose “white” as the answer.
 
-<div style="display: flex">
-  <img src="images/white1.png" alt="Image 1" style="margin-right: 10px;">
-  <img src="images/white2.png" alt="Image 2" style="margin-left: 10px;">
-  <img src="images/white3.png" alt="Image 3" style="margin-right: 10px;">
-  <img src="images/white4.png" alt="Image 4" style="margin-left: 10px;">
+<div style="display: flex; justify-content: center;">
+  <img src="images/white1.png" alt="Image 1" width="150" style="margin-right: 10px;">
+  <img src="images/white2.png" alt="Image 2" width="150" style="margin-left: 10px; margin-right: 10px;">
+  <img src="images/white3.png" alt="Image 3" width="150" style="margin-left: 10px; margin-right: 10px;">
+  <img src="images/white4.png" alt="Image 4" width="150" style="margin-left: 10px;">
 </div>
 
+##### *Using Dashboards*
 
-Another way is using dashboards-we can create and use the TensorLeap dashboard in an easy way. 
-Using the dashboard, we can see that tasks containing the 'fraction' skill have a higher loss.
+In tensorleap platform we can create and use dashboards in an easy way.
+Each sample contains required skills (one or more) to answer the question correctly.
+Using the dashboard, we found that tasks containing the 'fraction' skill tend to have a higher loss value.
 
 ![dashboard](images/dashboard.png)
 
@@ -74,6 +73,11 @@ contain different question and images, but they are all related to time and cloc
 
 ![unlabeled](images/bise.png)
 
+When filtering the latent space by the higher loss samples we got samples that most of the questions focus on 
+counting object and return that number:
+
+“if you select a marble without looking , which color are you more likely to pick ?”
+“how many rectangles are there ?“
 
 
 
