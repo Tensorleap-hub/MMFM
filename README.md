@@ -26,37 +26,46 @@ built using the extracted features of the trained model.
 It shows a visualization of the latenat space where each dot represent a smple. The color and the size affected from the loss value.
 In our case the latent space is clustered by the questions.
 
-![Latent space](images/PE1.png)
+<div style="text-align: center;">
+    <img src="images/PE1.png" alt="Untitled" width="500"/>
+</div>
 
-#### *Detecting High Loss Clusters*
+<br>
 
-##### *Using Tensorleap Insight*
+### *Detecting High Loss Clusters*
+
+#### *Using Tensorleap Insight*
 
 When filtering the latent space by the higher loss samples the first "low performance" insight correlated to "how" 
 question word among other metadata, indicates that when need to estimate how many marbles are in the image the model fails
 
 <div style="display: flex; justify-content: center;">
-  <img src="images/insight.png" alt="Image 1" width="150" style="margin-right: 10px;">
-  <img src="images/marbles2.png" alt="Image 2" width="150" style="margin-right: 10px;">
-  <img src="images/marbles3.png" alt="Image 3" width="150" style="margin-left: 10px;">
+  <img src="images/insight.png" alt="Image 1" width="300" style="margin-right: 10px;">
+  <img src="images/marbles2.png" alt="Image 2" width="300" style="margin-right: 10px;">
+  <img src="images/marbles3.png" alt="Image 3" width="300" style="margin-left: 10px;">
 </div>
 
-##### *Using PE*
+#### *- Using PE*
 
 When we lookin on the PE (population exploration) we can see that there is a group in the upper side of the latent space that contains 
 images with the same question - “on which color is the spin ner less likely to land?“
-![kmeans-1](images/kmeans-1.png)
+
+<div style="text-align: center;">
+    <img src="images/kmeans-1.png" alt="Untitled" width="500"/>
+</div>
+
+<br>
 
 Investigating more lead to the conclusion that the model always choose “white” as the answer.
 
 <div style="display: flex; justify-content: center;">
-  <img src="images/white1.png" alt="Image 1" width="150" style="margin-right: 10px;">
-  <img src="images/white2.png" alt="Image 2" width="150" style="margin-left: 10px; margin-right: 10px;">
-  <img src="images/white3.png" alt="Image 3" width="150" style="margin-left: 10px; margin-right: 10px;">
-  <img src="images/white4.png" alt="Image 4" width="150" style="margin-left: 10px;">
+  <img src="images/white1.png" alt="Image 1" width="350" style="margin-right: 10px;">
+  <img src="images/white2.png" alt="Image 2" width="350" style="margin-left: 10px; margin-right: 10px;">
+  <img src="images/white3.png" alt="Image 3" width="350" style="margin-left: 10px; margin-right: 10px;">
+  <img src="images/white4.png" alt="Image 4" width="350" style="margin-left: 10px;">
 </div>
 
-##### *Using Dashboards*
+#### *- Using Dashboards*
 
 In tensorleap platform we can create and use dashboards in an easy way.
 Each sample contains required skills (one or more) to answer the question correctly.
@@ -64,7 +73,7 @@ Using the dashboard, we found that tasks containing the 'fraction' skill tend to
 
 ![dashboard](images/dashboard.png)
 
-#### *Detecting Unlabeled Clusters in the Latent Space*
+### *Detecting Unlabeled Clusters in the Latent Space*
 Now, let’s look for additional clusters in our data using an unsupervised clustering algorithm on the model’s latent
 space.
 
@@ -73,7 +82,12 @@ contain different question and images, but they are all related to time and cloc
 The proximity of these clusters in the latent space suggests that the model has recognized a higher-level relationship 
 among these concepts, grouping them together due to their shared relevance to the theme of time and clocks.
 
-![unlabeled](images/bise.png)
+<div style="text-align: center;">
+    <img src="images/bise.png" alt="Untitled" width="500"/>
+</div>
+
+<br>
+
 
 **When filtering the latent space by the higher loss samples we got samples that most of the questions focus on 
 counting object and return a number:
@@ -81,7 +95,7 @@ counting object and return a number:
 “if you select a marble without looking , which color are you more likely to pick ?”
 “how many rectangles are there ?“**
 
-#### *Fetching similar samples*
+### *Fetching similar samples*
 
 Another approach to finding clusters using the model’s latent space is fetching similar samples to a selected sample.
 It enables you to identify a cluster with an intrinsic property you want to investigate. 
@@ -90,14 +104,18 @@ clusters with more abstract patterns.
 
 The figure below illustrates a cluster of images accompanied by the question: "what has been done to this letter?"
 
-![fetching_similar_samples](images/fetch_similar.png)
+<div style="text-align: center;">
+    <img src="images/fetch_similar.png" alt="Untitled" width="500"/>
+</div>
+
+<br>
 
 Upon analysis, we observed a notable trend where the model consistently struggles when the ground truth answer is 'flip'. 
 This difficulty suggests a specific challenge for the model in accurately identifying changes related to flipping letters.
 
 <div style="display: flex; justify-content: center;">
-  <img src="images/flip1.png" alt="Image 1" width="150" style="margin-right: 10px;">
-  <img src="images/flip2.png" alt="Image 2" width="150" style="margin-left: 10px; margin-right: 10px;">
+  <img src="images/flip1.png" alt="Image 1" width="350" style="margin-right: 10px;">
+  <img src="images/flip2.png" alt="Image 2" width="350" style="margin-left: 10px; margin-right: 10px;">
 </div>
 
 
