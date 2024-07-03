@@ -2,7 +2,7 @@
 # MMFM model with IconQA dataset
 
 <div style="text-align: center;">
-<img src="images/open.png" alt="Untitled" width="600"/>
+    <img src="images/open.png" alt="Untitled" width="600"/>
 </div>
 
 The [IconQA](https://github.com/lupantech/IconQA/tree/main) (icon question answering) dataset aims to highlight the 
