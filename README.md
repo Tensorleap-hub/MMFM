@@ -1,7 +1,7 @@
 
 # MMFM model with IconQA dataset
 
-![Untitled](images/open.png)
+![Untitled](images/open.png){width="50%"}
 
 The [IconQA](https://github.com/lupantech/IconQA/tree/main) (icon question answering) dataset aims to highlight the 
 importance of abstract diagram understanding and comprehensive cognitive reasoning in real-world diagram word problems. 
