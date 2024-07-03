@@ -70,17 +70,16 @@ space.
 
 Upon examination of these clusters, we can see that clusters 6, 13 and 18, located close to each other, 
 contain different question and images, but they are all related to time and clock. 
+The proximity of these clusters in the latent space suggests that the model has recognized a higher-level relationship 
+among these concepts, grouping them together due to their shared relevance to the theme of time and clocks.
 
 ![unlabeled](images/bise.png)
 
-When filtering the latent space by the higher loss samples we got samples that most of the questions focus on 
-counting object and return that number:
+**When filtering the latent space by the higher loss samples we got samples that most of the questions focus on 
+counting object and return a number:
 
 “if you select a marble without looking , which color are you more likely to pick ?”
-“how many rectangles are there ?“
-
-
-
+“how many rectangles are there ?“**
 
 #### *Fetching similar samples*
 
@@ -89,18 +88,18 @@ It enables you to identify a cluster with an intrinsic property you want to inve
 By detecting this cluster, you can gain insights into how the model interprets this sample and, in general, retrieve 
 clusters with more abstract patterns.
 
-The figure below shows a cluster pf images with question of: " what has been done to this letter?"
+The figure below illustrates a cluster of images accompanied by the question: "what has been done to this letter?"
 
 ![fetching_similar_samples](images/fetch_similar.png)
 
-We had notice that the model tend to fail when the ground truth answer is 'flip'.
+Upon analysis, we observed a notable trend where the model consistently struggles when the ground truth answer is 'flip'. 
+This difficulty suggests a specific challenge for the model in accurately identifying changes related to flipping letters.
 
-<div style="display: flex">
-  <img src="images/flip1.png" alt="Image 3" style="margin-right: 10px;">
-  <img src="images/flip2.png" alt="Image 4" style="margin-left: 10px;">
+<div style="display: flex; justify-content: center;">
+  <img src="images/flip1.png" alt="Image 1" width="150" style="margin-right: 10px;">
+  <img src="images/flip2.png" alt="Image 2" width="150" style="margin-left: 10px; margin-right: 10px;">
 </div>
 
-![fetching_similar_samples](images/fetching_similar_samples.png)
 
 #### *Sample Loss Analysis*
 
@@ -137,7 +136,7 @@ Before you begin, ensure that you have the following prerequisites installed:
 with `curl`:
 
 ```
-curl -s https://raw.githubusercontent.com/tensorleap/leap-cli/master/install.sh | bash
+curl -s https://raw.githubusercontent.com/tensorleap/leap-cli/master/install.sh | bash --> OK?
 ```
 
 ## Tensorleap CLI Usage
@@ -167,7 +166,7 @@ tensorleap auth login [api key] [api url].
 To deploy your local changes:
 
 ```
-leap project push
+leap projects push --> need to change in the rest
 ```
 
 ### **Tensorleap files**
@@ -193,11 +192,11 @@ include:
 
 ## Testing
 
-To test the system we can run `leap_test.py` file using poetry:
+**To test the system we can run `leap_test.py` file using poetry:
 
 ```
 poetry run test
-```
+```**
 
 This file will execute several tests on leap_binder.py script to assert that the implemented binding functions: preprocess, encoders,  metadata, etc,  run smoothly.
 
