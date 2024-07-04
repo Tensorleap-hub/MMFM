@@ -208,11 +208,11 @@ include:
 
 ## Testing
 
-**To test the system we can run `leap_test.py` file using poetry:
+To test the system we can run `leap_binder.check()` function using poetry:
 
 ```
 poetry run test
-```**
+```
 
 This file will execute several tests on leap_binder.py script to assert that the implemented binding functions: preprocess, encoders,  metadata, etc,  run smoothly.
 
