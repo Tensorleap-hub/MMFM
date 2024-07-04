@@ -116,21 +116,20 @@ This difficulty suggests a specific challenge for the model in accurately identi
   <img src="images/flip2.png" alt="Image 2" width="350" style="margin-left: 10px; margin-right: 10px;">
 </div>
 
-
 #### *Sample Loss Analysis*
-
-
-**?? need** 
 
 In this section, we can see the results of a gradient-based explanatory algorithm to interpret what drives the model to 
 make specific predictions. It enables us to analyze which of the informative features contributes most 
 to the loss function. We then generate a heatmap with these features that shows the relevant information.
 
-Let’s analyze the following sample containing the question: “when did Beyonce release ‘formation’?”. The correct 
-predicted answer is: “February 6, 2016”. We see that the tokens that had the most impact on the model’s prediction are:
-‘when’, ‘one’, ‘day’, ‘before’. Also, the answer tokens:’ February’, ‘6’,’ 2016′.
+Let’s analyze the following sample containing the question: “Are there enough carrot s for every rabbit?”. The correct 
+predicted answer is: “no”. We see that the token that had the most impact on the model’s prediction is:
+‘enough′.
 
-![Sample Loss Analysis](images/Sample_Loss_Analysis.png)
+<div style="display: flex; justify-content: center;">
+  <img src="images/SA.png" alt="Image 1" width="350" style="margin-right: 10px;">
+  <img src="images/SA2.png" alt="Image 2" width="350" style="margin-left: 10px; margin-right: 10px;">
+</div>
 
 
 # Getting Started with Tensorleap Project
