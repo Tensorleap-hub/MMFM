@@ -24,7 +24,7 @@ Below is a population exploration plot. It represents a samples similarity map b
 built using the extracted features of the trained model.
 
 It shows a visualization of the latenat space where each dot represent a smple. The color and the size affected from the loss value.
-In our case the latent space is clustered by the questions.
+In our case the latent space is clustered by the questions type.
 
 <div style="text-align: center;">
     <img src="images/PE1.png" alt="Untitled" width="600"/>
@@ -34,10 +34,10 @@ In our case the latent space is clustered by the questions.
 
 ### *Detecting High Loss Clusters*
 
-#### *Using Tensorleap Insight*
+#### *- Using Tensorleap Insight*
 
-When filtering the latent space by the higher loss samples the first "low performance" insight correlated to "how" 
-question word among other metadata, indicates that when need to estimate how many marbles are in the image the model fails
+When filtering the latent space by the higher loss samples the first "low performance" insight correlated to the
+question word "how" and other metadata, indicates that the model fails to predict how many marbles are in the image.
 
 <div style="display: flex; justify-content: center;">
   <div style="flex: 1; text-align: center;">
@@ -49,11 +49,10 @@ question word among other metadata, indicates that when need to estimate how man
   </div>
 </div>
 
-This is some more text in my README.
 #### *- Using PE*
 
-When we lookin on the PE (population exploration) we can see that there is a group in the upper side of the latent space that contains 
-images with the same question - “on which color is the spin ner less likely to land?“
+When examining the population exploration (PE), we notice a group in the upper part of the latent space (marked with a 
+yellow circle) that contains images associated with the same question: “On which color is the spinner less likely to land?“
 
 <div style="text-align: center;">
     <img src="images/kmeans-1.png" alt="Untitled" width="600"/>
@@ -61,7 +60,8 @@ images with the same question - “on which color is the spin ner less likely to
 
 <br>
 
-Investigating more lead to the conclusion that the model always choose “white” as the answer.
+Further investigation revealed two distinct groups: one with higher loss and one with lower loss. TWe found that the model
+consistently chooses 'white' as the answer, regardless of the actual conditions in the images.
 
 <div style="display: flex; justify-content: center;">
   <img src="images/white1.png" alt="Image 1" width="350" style="margin-right: 10px;">
@@ -93,13 +93,6 @@ among these concepts, grouping them together due to their shared relevance to th
 
 <br>
 
-
-**When filtering the latent space by the higher loss samples we got samples that most of the questions focus on 
-counting object and return a number:
-
-“if you select a marble without looking , which color are you more likely to pick ?”
-“how many rectangles are there ?“**
-
 ### *Fetching similar samples*
 
 Another approach to finding clusters using the model’s latent space is fetching similar samples to a selected sample.
@@ -107,7 +100,7 @@ It enables you to identify a cluster with an intrinsic property you want to inve
 By detecting this cluster, you can gain insights into how the model interprets this sample and, in general, retrieve 
 clusters with more abstract patterns.
 
-The figure below illustrates a cluster of images accompanied by the question: "what has been done to this letter?"
+The figure below shows a cluster of images with the question: ״What has been done to this letter?"
 
 <div style="text-align: center;">
     <img src="images/fetch_similar.png" alt="Untitled" width="600"/>
@@ -115,7 +108,7 @@ The figure below illustrates a cluster of images accompanied by the question: "w
 
 <br>
 
-Upon analysis, we observed a notable trend where the model consistently struggles when the ground truth answer is 'flip'. 
+Upon analysis, we have noticed that the model consistently fails when the ground truth answer is 'flip'. 
 This difficulty suggests a specific challenge for the model in accurately identifying changes related to flipping letters.
 
 <div style="display: flex; justify-content: center;">
