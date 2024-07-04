@@ -152,7 +152,7 @@ Before you begin, ensure that you have the following prerequisites installed:
 with `curl`:
 
 ```
-curl -s https://raw.githubusercontent.com/tensorleap/leap-cli/master/install.sh | bash --> OK?
+curl -s https://raw.githubusercontent.com/tensorleap/leap-cli/master/install.sh | bash
 ```
 
 ## Tensorleap CLI Usage
