@@ -60,7 +60,7 @@ yellow circle) that contains images associated with the same question: “On whi
 
 <br>
 
-Further investigation revealed two distinct groups: one with higher loss and one with lower loss. TWe found that the model
+Further investigation revealed two distinct groups: one with higher loss and one with lower loss. We found that the model
 consistently chooses 'white' as the answer, regardless of the actual conditions in the images.
 
 <div style="display: flex; justify-content: center;">
