@@ -269,7 +269,6 @@ def skills_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union
     return skills_dict
 
 
-
 LABELS = ['1', '2', '3', '4', '5']
 # Dataset binding functions to bind the functions above to the `Dataset Instance`.
 leap_binder.set_preprocess(function=preprocess_func)
@@ -294,5 +293,10 @@ leap_binder.set_metadata(function=get_metadata, name='')
 leap_binder.set_metadata(function=question_metadata, name='question')
 leap_binder.set_metadata(function=skills_metadata, name='skills')
 
-if __name__ == '__main__':
+
+def check_integration():
     leap_binder.check()
+
+
+if __name__ == '__main__':
+    check_integration()

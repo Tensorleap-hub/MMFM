@@ -32,3 +32,7 @@ py-readability-metrics = "^1.4.5"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+test = "leap_binder: check_integration"
+custom_test = "leap_custom_test: check_custom_integration"
