@@ -23,8 +23,8 @@ This quick start guide will walk you through the steps to get started with this 
 Below is a population exploration plot. It represents a samples similarity map based on the model's latent space,
 built using the extracted features of the trained model.
 
-It shows a visualization of the latenat space where each dot represent a smple. The color and the size affected from the loss value.
-In our case the latent space is clustered by the questions type.
+It shows a visualization of the latent space where each dot represents a sample. The color and the size affected from the loss value.
+In the figure below the latent space is colored by the questions type.
 
 <div style="text-align: center;">
     <img src="images/PE1.png" alt="Untitled" width="600"/>
@@ -181,7 +181,7 @@ tensorleap auth login [api key] [api url].
 To deploy your local changes:
 
 ```
-leap projects push --> need to change in the rest
+leap projects push
 ```
 
 ### **Tensorleap files**
