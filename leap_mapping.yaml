@@ -1,0 +1,221 @@
+decorators:
+  - operation: Input
+    data:
+      type: Input
+      output_name: question
+    id: '140'
+    inputs: {}
+    outputs:
+      question:
+        - inputKey: input
+          operation: Permute
+          name: permute_221
+          id: '139'
+        - inputKey: tokens
+          operation: Visualizer
+          id: '977'
+  - operation: Input
+    data:
+      type: Input
+      output_name: image
+    id: '769'
+    inputs: {}
+    outputs:
+      image:
+        - inputKey: input
+          operation: Permute
+          name: permute_223
+          id: '768'
+        - inputKey: data
+          operation: Visualizer
+          id: '978'
+  - operation: Input
+    data:
+      type: Input
+      output_name: choices
+    id: '960'
+    inputs: {}
+    outputs:
+      choices:
+        - inputKey: input
+          operation: Reshape
+          id: '975'
+        - inputKey: data
+          operation: Visualizer
+          id: '976'
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: HorizontalBar
+      visualizer_name: HorizontalBar
+      visualizer_type: HorizontalBar
+      arg_names:
+        - data
+      user_unique_name: Pred
+    id: '969'
+    inputs:
+      data:
+        - outputKey: feature_map
+          operation: Softmax
+          id: '968'
+    outputs: {}
+  - operation: CategoricalCrossentropy
+    data:
+      type: Loss
+    id: '970'
+    inputs:
+      prediction:
+        - outputKey: feature_map
+          operation: Softmax
+          id: '968'
+      ground_truth:
+        - outputKey: options
+          operation: GroundTruth
+          id: '972'
+    outputs:
+      loss:
+        - inputKey: '0'
+          operation: Adam
+          id: '971'
+  - operation: Adam
+    data:
+      type: Optimizer
+      custom_input_keys:
+        - 971-0
+    id: '971'
+    inputs:
+      '0':
+        - outputKey: loss
+          operation: CategoricalCrossentropy
+          id: '970'
+    outputs: {}
+  - operation: GroundTruth
+    data:
+      type: GroundTruth
+      output_name: options
+      selected: options
+    id: '972'
+    inputs: {}
+    outputs:
+      options:
+        - inputKey: ground_truth
+          operation: CategoricalCrossentropy
+          id: '970'
+        - inputKey: data
+          operation: Visualizer
+          id: '973'
+        - inputKey: ground_truth
+          operation: Metric
+          id: '974'
+        - inputKey: ground_truth
+          operation: Metric
+          id: '979'
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: HorizontalBar
+      visualizer_name: HorizontalBar
+      visualizer_type: HorizontalBar
+      arg_names:
+        - data
+      user_unique_name: GT
+    id: '973'
+    inputs:
+      data:
+        - outputKey: options
+          operation: GroundTruth
+          id: '972'
+    outputs: {}
+  - operation: Metric
+    data:
+      type: Metric
+      name: Accuracy
+      metric_name: Accuracy
+      arg_names:
+        - ground_truth
+        - prediction
+      user_unique_name: Accuracy
+    id: '974'
+    inputs:
+      prediction:
+        - outputKey: feature_map
+          operation: Softmax
+          id: '968'
+      ground_truth:
+        - outputKey: options
+          operation: GroundTruth
+          id: '972'
+    outputs: {}
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: choice_vis
+      visualizer_name: choice_vis
+      visualizer_type: Text
+      arg_names:
+        - data
+      user_unique_name: choice_vis
+    id: '976'
+    inputs:
+      data:
+        - outputKey: choices
+          operation: Input
+          id: '960'
+    outputs: {}
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: question_vis
+      visualizer_name: question_vis
+      visualizer_type: Text
+      arg_names:
+        - tokens
+      user_unique_name: question_vis
+    id: '977'
+    inputs:
+      tokens:
+        - outputKey: question
+          operation: Input
+          id: '140'
+    outputs: {}
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: image_vis
+      visualizer_name: image_vis
+      visualizer_type: Image
+      arg_names:
+        - data
+      user_unique_name: image_vis
+    id: '978'
+    inputs:
+      data:
+        - outputKey: image
+          operation: Input
+          id: '769'
+    outputs: {}
+  - operation: Metric
+    data:
+      type: Metric
+      name: ConfusionMatrixClassification
+      metric_name: ConfusionMatrixClassification
+      arg_names:
+        - ground_truth
+        - prediction
+      user_unique_name: ConfusionMatrixClassification
+    id: '979'
+    inputs:
+      prediction:
+        - outputKey: feature_map
+          operation: Softmax
+          id: '968'
+      ground_truth:
+        - outputKey: options
+          operation: GroundTruth
+          id: '972'
+    outputs: {}
+layers:
+  - operation: Softmax
+    data:
+      prediction_type: pred-options
+    id: '968'
