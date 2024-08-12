@@ -125,6 +125,34 @@ def choice_visualizer(data: np.ndarray) -> LeapText:
     return LeapText(text_list)
 
 
+def choice_gt_vis(choices: np.ndarray, gt: np.ndarray):
+    print("choice vis")
+    print(choices.shape)
+    data = choices[..., 0]
+    print(data.shape)
+    idx2word = leap_binder.cache_container['tokenizer_choice'].idx2word
+    c_num = data.shape[1]
+    max_tokens = data.shape[0]
+    text_list = []
+    for i in range(c_num):
+        if data[:, i].sum() == 0:  # padding
+            text_list += [''] * max_tokens
+        else:
+            for j in range(max_tokens):
+                token_id = data[j, i]
+                if token_id >= len(idx2word):
+                    curr_word = ''
+                else:
+                    curr_word = idx2word[int(data[j, i])]
+                text_list.append(curr_word)
+        # text_list.append('[SEP]')
+
+    gt_num = np.argmax(gt)
+    filtered_list = [item for item in text_list if item != '']
+
+    return LeapText([str(filtered_list[gt_num])])
+
+
 def choice_visualizer_heatmap(data: np.ndarray) -> np.ndarray:
     print("choice vis heatmap")
     tf.print("tf - choice vis heatmap")
@@ -286,6 +314,10 @@ leap_binder.set_visualizer(function=choice_visualizer,
                            name="choice_vis",
                            visualizer_type=LeapDataType.Text,
                            heatmap_visualizer=choice_visualizer_heatmap)
+leap_binder.set_visualizer(function=choice_gt_vis,
+                           name="choice_gt_comb",
+                           visualizer_type=LeapDataType.Text)
+
 leap_binder.set_ground_truth(function=gt_encoder, name='options')
 leap_binder.add_prediction(name='pred-options', labels=LABELS)
 leap_binder.set_metadata(function=metadata_label, name='label')
