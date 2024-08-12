@@ -43,6 +43,9 @@ decorators:
         - inputKey: data
           operation: Visualizer
           id: '976'
+        - inputKey: choices
+          operation: Visualizer
+          id: '981'
   - operation: Visualizer
     data:
       type: Visualizer
@@ -214,6 +217,39 @@ decorators:
           operation: GroundTruth
           id: '972'
     outputs: {}
+  - operation: Visualizer
+    data:
+      type: Visualizer
+      name: choice_gt_comb
+      visualizer_name: choice_gt_comb
+      visualizer_type: Text
+      arg_names:
+        - choices
+        - gt
+      user_unique_name: choice_gt_comb
+    id: '981'
+    inputs:
+      choices:
+        - outputKey: choices
+          operation: Input
+          id: '960'
+      gt:
+        - outputKey: options
+          operation: GroundTruth
+          id: '982'
+    outputs: {}
+  - operation: GroundTruth
+    data:
+      type: GroundTruth
+      output_name: options
+      selected: options
+    id: '982'
+    inputs: {}
+    outputs:
+      options:
+        - inputKey: gt
+          operation: Visualizer
+          id: '981'
 layers:
   - operation: Softmax
     data:
