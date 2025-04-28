@@ -73,6 +73,7 @@ def img_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
 
 
 def image_visualizer(data: np.ndarray):
+    data = np.squeeze(data)
     return LeapImage(data[:cnf.img_size[1], :cnf.img_size[0]].astype(np.uint8))
 
 
@@ -95,6 +96,7 @@ def gt_encoder(idx: int, preprocessing: PreprocessResponse) -> np.ndarray:
 
 
 def question_visualizer(tokens: np.ndarray) -> LeapText:
+    tokens = np.squeeze(tokens)
     decoded_text = leap_binder.cache_container['tokenizer'].convert_ids_to_tokens(tokens)
     decoded_text = [token.replace(chr(9601), '').replace("##", "").replace("[PAD]", "").
                     replace("[CLS]", "").replace("[SEP]", "") for token in decoded_text]
@@ -102,6 +104,7 @@ def question_visualizer(tokens: np.ndarray) -> LeapText:
 
 
 def choice_visualizer(data: np.ndarray) -> LeapText:
+    data = data[0, ...]
     print("choice vis")
     print(data.shape)
     data = data[..., 0]
@@ -126,6 +129,7 @@ def choice_visualizer(data: np.ndarray) -> LeapText:
 
 
 def choice_gt_vis(choices: np.ndarray, gt: np.ndarray):
+    choices = choices[0, ...]
     print("choice vis")
     print(choices.shape)
     data = choices[..., 0]
@@ -325,10 +329,3 @@ leap_binder.set_metadata(function=get_metadata, name='')
 leap_binder.set_metadata(function=question_metadata, name='question')
 leap_binder.set_metadata(function=skills_metadata, name='skills')
 
-
-def check_integration():
-    leap_binder.check()
-
-
-if __name__ == '__main__':
-    check_integration()
