@@ -49,7 +49,7 @@ def check_custom_integration():
         print(choices.shape)
 
         # metrics
-        y_pred = model([question, img, choices[..., 0]])
+        y_pred = model([question, img, choices])
         ls = loss(tf.nn.softmax(y_pred), gt)
 
         #import vis

@@ -86,7 +86,7 @@ def question_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
 
 
 def choice_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
-    return preprocess.data['dataset'][idx]['choice_token'].swapaxes(0, 1)[..., None]
+    return preprocess.data['dataset'][idx]['choice_token'].swapaxes(0, 1)
 
 
 # Ground truth encoder fetches the label with the index `idx` from the `labels` array set in
@@ -105,10 +105,6 @@ def question_visualizer(tokens: np.ndarray) -> LeapText:
 
 def choice_visualizer(data: np.ndarray) -> LeapText:
     data = data[0, ...]
-    print("choice vis")
-    print(data.shape)
-    data = data[..., 0]
-    print(data.shape)
     idx2word = leap_binder.cache_container['tokenizer_choice'].idx2word
     c_num = data.shape[1]
     max_tokens = data.shape[0]
@@ -129,11 +125,7 @@ def choice_visualizer(data: np.ndarray) -> LeapText:
 
 
 def choice_gt_vis(choices: np.ndarray, gt: np.ndarray):
-    choices = choices[0, ...]
-    print("choice vis")
-    print(choices.shape)
-    data = choices[..., 0]
-    print(data.shape)
+    data = choices[0, ...]
     idx2word = leap_binder.cache_container['tokenizer_choice'].idx2word
     c_num = data.shape[1]
     max_tokens = data.shape[0]
