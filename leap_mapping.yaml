@@ -37,15 +37,16 @@ decorators:
     inputs: {}
     outputs:
       choices:
-        - inputKey: input
-          operation: Reshape
-          id: '975'
         - inputKey: data
           operation: Visualizer
           id: '976'
         - inputKey: choices
           operation: Visualizer
           id: '981'
+        - inputKey: input
+          operation: Permute
+          name: permute_225
+          id: '959'
   - operation: Visualizer
     data:
       type: Visualizer
@@ -59,38 +60,27 @@ decorators:
     inputs:
       data:
         - outputKey: feature_map
-          operation: Softmax
-          id: '968'
+          operation: Dense
+          name: logits__multimodal_model.classifier.main.3
+          id: '1'
     outputs: {}
   - operation: CategoricalCrossentropy
     data:
       type: Loss
+      arg_names:
+        - prediction
+        - ground_truth
     id: '970'
     inputs:
       prediction:
         - outputKey: feature_map
-          operation: Softmax
-          id: '968'
+          operation: Dense
+          name: logits__multimodal_model.classifier.main.3
+          id: '1'
       ground_truth:
         - outputKey: options
           operation: GroundTruth
           id: '972'
-    outputs:
-      loss:
-        - inputKey: '0'
-          operation: Adam
-          id: '971'
-  - operation: Adam
-    data:
-      type: Optimizer
-      custom_input_keys:
-        - 971-0
-    id: '971'
-    inputs:
-      '0':
-        - outputKey: loss
-          operation: CategoricalCrossentropy
-          id: '970'
     outputs: {}
   - operation: GroundTruth
     data:
@@ -142,8 +132,9 @@ decorators:
     inputs:
       prediction:
         - outputKey: feature_map
-          operation: Softmax
-          id: '968'
+          operation: Dense
+          name: logits__multimodal_model.classifier.main.3
+          id: '1'
       ground_truth:
         - outputKey: options
           operation: GroundTruth
@@ -210,8 +201,9 @@ decorators:
     inputs:
       prediction:
         - outputKey: feature_map
-          operation: Softmax
-          id: '968'
+          operation: Dense
+          name: logits__multimodal_model.classifier.main.3
+          id: '1'
       ground_truth:
         - outputKey: options
           operation: GroundTruth
@@ -251,7 +243,8 @@ decorators:
           operation: Visualizer
           id: '981'
 layers:
-  - operation: Softmax
+  - operation: Dense
     data:
       prediction_type: pred-options
-    id: '968'
+    name: logits__multimodal_model.classifier.main.3
+    id: '1'
