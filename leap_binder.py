@@ -1,35 +1,25 @@
-# from mmfm.packages_helpers import install_all_packages
+from code_loader.default_metrics import categorical_crossentropy
 
-# install_all_packages()
 from readability import Readability
 
-import platform
-from typing import List, Union, Dict
+
 import tensorflow as tf
 
-import numpy as np
-# import textstat
 
-# Tensorleap imports
-from code_loader import leap_binder
-from code_loader.contract.datasetclasses import PreprocessResponse
-from code_loader.contract.enums import Metric, DatasetMetadataType
-from code_loader.contract.visualizer_classes import LeapHorizontalBar
 from mmfm.dataset.dataset import Dictionary, IconQAFeatureDataset
 from mmfm.gcs_utils import _download
 from mmfm.config import cnf
 from mmfm.dataset.data_utils import init_dataset, crop_and_padding
 from PIL import Image
-from code_loader.contract.visualizer_classes import LeapImage, LeapText
-from code_loader.contract.enums import LeapDataType
+
+
+from code_loader.inner_leap_binder.leapbinder_decorators import *
 
 import spacy
 
 
-# nlp = spacy.load("en_core_web_sm")
-
-
 # Preprocess Function
+@tensorleap_preprocess()
 def preprocess_func() -> List[PreprocessResponse]:
     dict_path = init_dataset()
     dictionary = Dictionary.load_from_file(dict_path)
@@ -48,53 +38,45 @@ def preprocess_func() -> List[PreprocessResponse]:
     return res
 
 
-# def preprocess_func() -> List[PreprocessResponse]:
-#     dict_path = init_dataset()
-#     dictionary = Dictionary.load_from_file(dict_path)
-#     eval_dset = IconQAFeatureDataset('test', 'choose_txt', 'resnet101_pool5_79_icon',
-#                                      cnf.local_data_path, dictionary, 'bert-small', 34)  # generate test data
-#     dataset = PreprocessResponse(length=min(len(eval_dset), cnf.max_imgs), data={'dataset': eval_dset})
-#     fake_dataset = PreprocessResponse(length=20, data={'dataset': eval_dset})
-#     leap_binder.cache_container["tokenizer"] = eval_dset.tokenizer
-#     leap_binder.cache_container["tokenizer_choice"] = eval_dset.dictionary
-#     res = [dataset, fake_dataset]
-#     return res
-
-
-# Input encoder fetches the image with the index `idx` from the `images` array set in
-# the PreprocessResponse data. Returns a numpy array containing the sample's image. 
+@tensorleap_input_encoder('image')
 def img_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     img_path = preprocess.data['dataset'][idx]['img_path']
     fp = _download(f'{cnf.cloud_dict}/{img_path}')
     img = Image.open(fp)
     const_img_size = img.resize(cnf.img_size)
     padded_img = crop_and_padding(const_img_size)
-    return np.array(padded_img)
-
-
-def image_visualizer(data: np.ndarray):
-    data = np.squeeze(data)
-    return LeapImage(data[:cnf.img_size[1], :cnf.img_size[0]].astype(np.uint8))
+    return np.array(padded_img).astype(np.float32)
 
 
 def heatmap_image_visualizer(data: np.ndarray):
     return data[:cnf.img_size[1], :cnf.img_size[0]]
 
+@tensorleap_custom_visualizer('image_vis', LeapDataType.Image, heatmap_image_visualizer)
+def image_visualizer(data: np.ndarray):
+    data = np.squeeze(data)
+    return LeapImage(data[:cnf.img_size[1], :cnf.img_size[0]].astype(np.uint8))
 
+
+
+
+
+@tensorleap_input_encoder('question')
 def question_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
-    return preprocess.data['dataset'][idx]['question_token']
+    return preprocess.data['dataset'][idx]['question_token'].astype(np.float32)
 
 
+@tensorleap_input_encoder('choices')
 def choice_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
-    return preprocess.data['dataset'][idx]['choice_token'].swapaxes(0, 1)
+    return preprocess.data['dataset'][idx]['choice_token'].swapaxes(0, 1).astype(np.float32)
 
 
 # Ground truth encoder fetches the label with the index `idx` from the `labels` array set in
 # the PreprocessResponse's data. Returns a numpy array containing a hot vector label correlated with the sample.
+@tensorleap_gt_encoder("options")
 def gt_encoder(idx: int, preprocessing: PreprocessResponse) -> np.ndarray:
-    return preprocessing.data['dataset'][idx]['gt']
+    return preprocessing.data['dataset'][idx]['gt'].astype(np.float32)
 
-
+@tensorleap_custom_visualizer('question_vis', LeapDataType.Text)
 def question_visualizer(tokens: np.ndarray) -> LeapText:
     tokens = np.squeeze(tokens)
     decoded_text = leap_binder.cache_container['tokenizer'].convert_ids_to_tokens(tokens)
@@ -103,6 +85,16 @@ def question_visualizer(tokens: np.ndarray) -> LeapText:
     return LeapText(decoded_text)
 
 
+def choice_visualizer_heatmap(data: np.ndarray) -> np.ndarray:
+    print("choice vis heatmap")
+    tf.print("tf - choice vis heatmap")
+    print(type(data))
+    print(data.shape)
+    return data.swapaxes((0, 1)).reshape(-1)
+
+
+
+@tensorleap_custom_visualizer('choice_vis', LeapDataType.Text, choice_visualizer_heatmap)
 def choice_visualizer(data: np.ndarray) -> LeapText:
     data = data[0, ...]
     idx2word = leap_binder.cache_container['tokenizer_choice'].idx2word
@@ -124,6 +116,7 @@ def choice_visualizer(data: np.ndarray) -> LeapText:
     return LeapText(text_list)
 
 
+@tensorleap_custom_visualizer('choice_gt_comb_vis', LeapDataType.Text)
 def choice_gt_vis(choices: np.ndarray, gt: np.ndarray):
     data = choices[0, ...]
     idx2word = leap_binder.cache_container['tokenizer_choice'].idx2word
@@ -149,18 +142,13 @@ def choice_gt_vis(choices: np.ndarray, gt: np.ndarray):
     return LeapText([str(filtered_list[gt_num])])
 
 
-def choice_visualizer_heatmap(data: np.ndarray) -> np.ndarray:
-    print("choice vis heatmap")
-    tf.print("tf - choice vis heatmap")
-    print(type(data))
-    print(data.shape)
-    return data.swapaxes((0, 1)).reshape(-1)
 
 
 # Metadata functions allow to add extra data for a later use in analysis.
 # This metadata adds the int digit of each sample (not a hot vector).
 
 
+@tensorleap_metadata("label")
 def metadata_label(idx: int, preprocess: PreprocessResponse) -> int:
     one_hot_digit = gt_encoder(idx, preprocess)
     digit = one_hot_digit.argmax()
@@ -172,6 +160,7 @@ def bar_visualizer(data: np.ndarray) -> LeapHorizontalBar:
     return LeapHorizontalBar(data, LABELS)
 
 
+@tensorleap_metadata("")
 def get_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union[str, int, float]]:
     question_length = (preprocess.data['dataset'][idx]['question_token'] == 0).argmax()
     if question_length == 0:
@@ -193,17 +182,6 @@ def get_pos_tags(question):
     doc = nlp(question)
     return [(token.text, token.pos_) for token in doc]
 
-
-# def recognize_named_entities(question):
-#     question = ' '.join(filter(None, question))
-#     nlp = spacy.load("en_core_web_sm")
-#     doc = nlp(question)
-#     return [(ent.text, ent.label_) for ent in doc.ents]
-
-
-# def calculate_readability_score(question):
-#     question = ' '.join(filter(None, question))
-#     return float(textstat.flesch_reading_ease(question))
 
 
 def classify_question_type(question):
@@ -252,6 +230,7 @@ def get_num_words(question):
     return float(len(list(filter(None, question))))
 
 
+@tensorleap_metadata("question")
 def question_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union[str, int, float]]:
     question_token = preprocess.data['dataset'][idx]['question_token']
     decoded_question = leap_binder.cache_container['tokenizer'].convert_ids_to_tokens(question_token)
@@ -270,17 +249,12 @@ def question_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Uni
         "Grade": preprocess.data['dataset'].entries[idx]['grade'],
         "Skills": '_'.join(skills),
         "Skills_number": float(len(skills))
-        # "ARI": get_readibility_score('ari', decoded_question),
-        # "Dale_chall": get_readibility_score('dale_chall', decoded_question),
-        # "Flesch": get_readibility_score('flesch', decoded_question),
-        # "Flesch_kincaid": get_readibility_score('flesch_kincaid', decoded_question),
-        # "Syntactic Complexity": calculate_syntactic_complexity(question),
-        # "Readability Score": calculate_readability_score(question),
     }
 
     return question_metadata_functions
 
 
+@tensorleap_metadata("skills")
 def skills_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union[str, int, float]]:
     skills = preprocess.data['dataset'].entries[idx]['skills']
     skills = [word.lower() for word in skills]
@@ -292,32 +266,14 @@ def skills_metadata(idx: int, preprocess: PreprocessResponse) -> Dict[str, Union
 
     return skills_dict
 
+def softmax(x):
+    e_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
+    return e_x / np.sum(e_x, axis=-1, keepdims=True)
 
-LABELS = ['1', '2', '3', '4', '5']
-# Dataset binding functions to bind the functions above to the `Dataset Instance`.
-leap_binder.set_preprocess(function=preprocess_func)
-leap_binder.set_input(function=img_encoder, name='image')
-leap_binder.set_input(function=question_encoder, name='question')
-leap_binder.set_input(function=choice_encoder, name='choices')
-leap_binder.set_visualizer(function=image_visualizer,
-                           name="image_vis",
-                           visualizer_type=LeapDataType.Image,
-                           heatmap_visualizer=heatmap_image_visualizer)
-leap_binder.set_visualizer(function=question_visualizer,
-                           name="question_vis",
-                           visualizer_type=LeapDataType.Text)
-leap_binder.set_visualizer(function=choice_visualizer,
-                           name="choice_vis",
-                           visualizer_type=LeapDataType.Text,
-                           heatmap_visualizer=choice_visualizer_heatmap)
-leap_binder.set_visualizer(function=choice_gt_vis,
-                           name="choice_gt_comb",
-                           visualizer_type=LeapDataType.Text)
+@tensorleap_custom_loss('categorical_crossentropy_loss')
+def categorical_crossentropy_loss(y_true, y_pred):
+    return categorical_crossentropy(y_true, softmax(y_pred))
 
-leap_binder.set_ground_truth(function=gt_encoder, name='options')
-leap_binder.add_prediction(name='pred-options', labels=LABELS)
-leap_binder.set_metadata(function=metadata_label, name='label')
-leap_binder.set_metadata(function=get_metadata, name='')
-leap_binder.set_metadata(function=question_metadata, name='question')
-leap_binder.set_metadata(function=skills_metadata, name='skills')
+
+
 
