@@ -1,7 +1,7 @@
 import os
 
 from code_loader.contract.datasetclasses import PreprocessResponse, PredictionTypeHandler
-from code_loader.inner_leap_binder.leapbinder_decorators import tensorleap_load_model, integration_test
+from code_loader.inner_leap_binder.leapbinder_decorators import tensorleap_load_model, tensorleap_integration_test
 from code_loader.plot_functions.visualize import visualize
 
 from leap_binder import img_encoder, question_encoder, choice_encoder, gt_encoder, categorical_crossentropy_loss, \
@@ -22,7 +22,7 @@ def load_model():
     return tf.keras.models.load_model(os.path.join(dir_path, model_path))
 
 
-@integration_test()
+@tensorleap_integration_test()
 def check_custom_integration(idx, preprocess_response: PreprocessResponse):
     print("started custom tests")
 
