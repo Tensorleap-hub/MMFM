@@ -29,16 +29,16 @@ def preprocess_func() -> List[PreprocessResponse]:
                                     cnf.local_data_path, dictionary, 'bert-small', 34)  # generate test data
     test_dset = IconQAFeatureDataset('test', 'choose_txt', 'resnet101_pool5_79_icon',
                                      cnf.local_data_path, dictionary, 'bert-small', 34)  # generate test data
-    train_dataset = PreprocessResponse(length=min(len(train_dset), cnf.max_imgs), data={'dataset': train_dset})
-    val_dataset = PreprocessResponse(length=min(len(val_dset), cnf.max_imgs), data={'dataset': val_dset})
-    test_dataset = PreprocessResponse(length=min(len(test_dset), cnf.max_imgs), data={'dataset': test_dset})
+    train_dataset = PreprocessResponse(length=min(len(train_dset), cnf.max_imgs), data={'dataset': train_dset},state=DataStateType.training)
+    val_dataset = PreprocessResponse(length=min(len(val_dset), cnf.max_imgs), data={'dataset': val_dset},state=DataStateType.validation)
+    test_dataset = PreprocessResponse(length=min(len(test_dset), cnf.max_imgs), data={'dataset': test_dset},state=DataStateType.test)
     leap_binder.cache_container["tokenizer"] = train_dset.tokenizer
     leap_binder.cache_container["tokenizer_choice"] = train_dset.dictionary
     res = [train_dataset, val_dataset, test_dataset]
     return res
 
 
-@tensorleap_input_encoder('image')
+@tensorleap_input_encoder('image',channel_dim=-1)
 def img_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     img_path = preprocess.data['dataset'][idx]['img_path']
     fp = _download(f'{cnf.cloud_dict}/{img_path}')
@@ -60,12 +60,12 @@ def image_visualizer(data: np.ndarray):
 
 
 
-@tensorleap_input_encoder('question')
+@tensorleap_input_encoder('question',channel_dim=-1)
 def question_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     return preprocess.data['dataset'][idx]['question_token'].astype(np.float32)
 
 
-@tensorleap_input_encoder('choices')
+@tensorleap_input_encoder('choices',channel_dim=-1)
 def choice_encoder(idx: int, preprocess: PreprocessResponse) -> np.ndarray:
     return preprocess.data['dataset'][idx]['choice_token'].swapaxes(0, 1).astype(np.float32)
 

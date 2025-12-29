@@ -10,7 +10,7 @@ from leap_binder import img_encoder, question_encoder, choice_encoder, gt_encode
 
 
 
-prediction_type1 = PredictionTypeHandler('pred-options', ['1', '2', '3', '4', '5'])
+prediction_type1 = PredictionTypeHandler('pred-options', ['1', '2', '3', '4', '5'],channel_dim=-1)
 
 
 @tensorleap_load_model([prediction_type1])
